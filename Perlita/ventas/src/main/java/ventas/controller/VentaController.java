@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/ventas")
@@ -35,5 +36,10 @@ public class VentaController {
     @PostMapping
     public ResponseEntity<Venta> crear(@RequestBody Venta venta) {
         return new ResponseEntity<>(service.crearVenta(venta), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/resumen/metodo-pago")
+    public List<Map<String, Object>> resumenPorMetodoPago() {
+     return service.resumenPorMetodoPago();
     }
 }

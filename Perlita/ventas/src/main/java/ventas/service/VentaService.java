@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -79,4 +82,17 @@ public class VentaService {
 
         return venta;
     }
+
+    public List<Map<String, Object>> resumenPorMetodoPago() {
+    List<Object[]> raw = ventaRepository.resumenPorMetodoPago();
+    List<Map<String, Object>> resultado = new ArrayList<>();
+    for (Object[] fila : raw) {
+        Map<String, Object> item = new HashMap<>();
+        item.put("metodoPago", fila[0]);
+        item.put("cantidadVentas", fila[1]);
+        item.put("totalRecaudado", fila[2]);
+        resultado.add(item);
+    }
+    return resultado;
+}
 }
