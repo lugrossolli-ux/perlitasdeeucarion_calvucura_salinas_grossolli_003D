@@ -16,7 +16,7 @@ import com.example.categories.service.CategoriaService;
 public class CategoriaController {
 
     @Autowired
-    public CategoriaService service;
+    private CategoriaService service;
 
     @GetMapping
     public List<Categoria> listar() {
@@ -45,14 +45,19 @@ public class CategoriaController {
                                                 @RequestBody Categoria categoria) {
         return service.buscarPorId(id)
                 .map(existente -> {
-                    categoria.setId(id);
-                    return ResponseEntity.ok(service.guardar(categoria));
+                    existente.setNombre(categoria.getNombre());
+                    existente.setDescripcion(categoria.getDescripcion());
+                    existente.setActivo(categoria.getActivo());
+                    return ResponseEntity.ok(service.guardar(existente));
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        if (service.buscarPorId(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         service.eliminar(id);
         return ResponseEntity.noContent().build();
     }
@@ -61,4 +66,10 @@ public class CategoriaController {
     public List<ProductoCategoria> obtenerProductosDe(@PathVariable Long categoriaId) {
         return service.obtenerProductosDe(categoriaId);
     }
+
+    @PatchMapping("/reasignar")
+    public ResponseEntity<Object> reasignar(@RequestParam Long origenId, @RequestParam Long destinoId) {
+    return service.reasignarProductos(origenId, destinoId);
+    }
+
 }
