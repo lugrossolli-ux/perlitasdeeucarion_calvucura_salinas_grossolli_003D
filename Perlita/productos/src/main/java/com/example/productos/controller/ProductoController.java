@@ -1,5 +1,6 @@
 package com.example.productos.controller;
 
+import com.example.productos.exception.ResourceNotFoundException;
 import com.example.productos.model.Producto;
 import com.example.productos.model.ProductoMaterial;
 import com.example.productos.service.ProductoService;
@@ -30,7 +31,7 @@ public class ProductoController {
     public ResponseEntity<Producto> buscarPorId(@PathVariable Long id) {
         return service.buscarPorId(id)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con id: " + id));
     }
 
     @PostMapping
@@ -41,16 +42,14 @@ public class ProductoController {
     @PutMapping("/{id}")
     public ResponseEntity<Producto> actualizar(@PathVariable Long id,
                                                 @RequestBody Producto producto) {
-        return service.buscarPorId(id)
-                .map(existente -> {
-                    producto.setId(id);
-                    return ResponseEntity.ok(service.guardar(producto));
-                })
-                .orElse(ResponseEntity.notFound().build());
+        service.buscarPorId(id).orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con id: " + id));
+        producto.setId(id);
+        return ResponseEntity.ok(service.guardar(producto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        service.buscarPorId(id).orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con id: " + id));
         service.eliminar(id);
         return ResponseEntity.noContent().build();
     }
@@ -69,6 +68,6 @@ public class ProductoController {
                     pm.setProducto(producto);
                     return new ResponseEntity<>(service.agregarMaterial(pm), HttpStatus.CREATED);
                 })
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con id: " + id));
     }
 }

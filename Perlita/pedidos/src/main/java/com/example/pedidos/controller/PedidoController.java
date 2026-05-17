@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example.pedidos.exception.ResourceNotFoundException;
 import com.example.pedidos.model.Pedido;
 import com.example.pedidos.service.PedidoService;
 
@@ -24,7 +25,7 @@ public class PedidoController {
     public ResponseEntity<Pedido> buscarPorId(@PathVariable Long id) {
         return service.buscarPorId(id)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ResourceNotFoundException("Pedido no encontrado con id: " + id));
     }
 
     @PostMapping
@@ -35,19 +36,14 @@ public class PedidoController {
     @PutMapping("/{id}")
     public ResponseEntity<Pedido> actualizar(@PathVariable Long id,
                                               @RequestBody Pedido pedido) {
-        return service.buscarPorId(id)
-                .map(existente -> {
-                    pedido.setId(id);
-                    return ResponseEntity.ok(service.guardar(pedido));
-                })
-                .orElse(ResponseEntity.notFound().build());
+        service.buscarPorId(id).orElseThrow(() -> new ResourceNotFoundException("Pedido no encontrado con id: " + id));
+        pedido.setId(id);
+        return ResponseEntity.ok(service.guardar(pedido));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        if (!service.existePorId(id)) {
-            return ResponseEntity.notFound().build();
-        }
+        service.buscarPorId(id).orElseThrow(() -> new ResourceNotFoundException("Pedido no encontrado con id: " + id));
         service.eliminar(id);
         return ResponseEntity.noContent().build();
     }

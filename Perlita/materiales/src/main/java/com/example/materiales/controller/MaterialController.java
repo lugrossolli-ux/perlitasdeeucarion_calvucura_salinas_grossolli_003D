@@ -1,5 +1,6 @@
 package com.example.materiales.controller;
 
+import com.example.materiales.exception.ResourceNotFoundException;
 import com.example.materiales.model.Material;
 import com.example.materiales.service.MaterialService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class MaterialController {
     public ResponseEntity<Material> buscarPorId(@PathVariable Long id) {
         return service.buscarPorId(id)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ResourceNotFoundException("Material no encontrado con id: " + id));
     }
 
     @PostMapping
@@ -35,16 +36,14 @@ public class MaterialController {
     @PutMapping("/{id}")
     public ResponseEntity<Material> actualizar(@PathVariable Long id,
                                                 @RequestBody Material material) {
-        return service.buscarPorId(id)
-                .map(existente -> {
-                    material.setId(id);
-                    return ResponseEntity.ok(service.guardar(material));
-                })
-                .orElse(ResponseEntity.notFound().build());
+        service.buscarPorId(id).orElseThrow(() -> new ResourceNotFoundException("Material no encontrado con id: " + id));
+        material.setId(id);
+        return ResponseEntity.ok(service.guardar(material));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        service.buscarPorId(id).orElseThrow(() -> new ResourceNotFoundException("Material no encontrado con id: " + id));
         service.eliminar(id);
         return ResponseEntity.noContent().build();
     }

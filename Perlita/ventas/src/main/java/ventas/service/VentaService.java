@@ -1,7 +1,6 @@
 package ventas.service;
 
 import ventas.model.Venta;
-import ventas.model.VentaProducto;
 import ventas.repository.VentaProductoRepository;
 import ventas.repository.VentaRepository;
 import org.springframework.beans.factory.annotation.Autowired;

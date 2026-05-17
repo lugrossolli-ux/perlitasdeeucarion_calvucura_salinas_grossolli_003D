@@ -1,5 +1,6 @@
 package ventas.controller;
 
+import ventas.exception.ResourceNotFoundException;
 import ventas.model.Venta;
 import ventas.service.VentaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class VentaController {
     @GetMapping("/{id}")
     public ResponseEntity<Venta> obtenerCompleta(@PathVariable Long id) {
         Venta venta = service.obtenerVentaCompleta(id);
-        if (venta == null) return ResponseEntity.notFound().build();
+        if (venta == null) throw new ResourceNotFoundException("Venta no encontrada con id: " + id);
         return ResponseEntity.ok(venta);
     }
 
@@ -40,6 +41,6 @@ public class VentaController {
 
     @GetMapping("/resumen/metodo-pago")
     public List<Map<String, Object>> resumenPorMetodoPago() {
-     return service.resumenPorMetodoPago();
+        return service.resumenPorMetodoPago();
     }
 }

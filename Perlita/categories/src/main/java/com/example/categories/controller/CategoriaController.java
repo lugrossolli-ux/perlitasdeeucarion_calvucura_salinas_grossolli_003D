@@ -1,12 +1,11 @@
 package com.example.categories.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import com.example.categories.exception.ResourceNotFoundException;
 import com.example.categories.model.Categoria;
 import com.example.categories.model.ProductoCategoria;
 import com.example.categories.service.CategoriaService;
@@ -32,7 +31,7 @@ public class CategoriaController {
     public ResponseEntity<Categoria> buscarPorId(@PathVariable Long id) {
         return service.buscarPorId(id)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ResourceNotFoundException("Categoría no encontrada con id: " + id));
     }
 
     @PostMapping
@@ -50,14 +49,12 @@ public class CategoriaController {
                     existente.setActivo(categoria.getActivo());
                     return ResponseEntity.ok(service.guardar(existente));
                 })
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ResourceNotFoundException("Categoría no encontrada con id: " + id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        if (service.buscarPorId(id).isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
+        service.buscarPorId(id).orElseThrow(() -> new ResourceNotFoundException("Categoría no encontrada con id: " + id));
         service.eliminar(id);
         return ResponseEntity.noContent().build();
     }
@@ -69,7 +66,6 @@ public class CategoriaController {
 
     @PatchMapping("/reasignar")
     public ResponseEntity<Object> reasignar(@RequestParam Long origenId, @RequestParam Long destinoId) {
-    return service.reasignarProductos(origenId, destinoId);
+        return service.reasignarProductos(origenId, destinoId);
     }
-
 }
