@@ -8,4 +8,6 @@ import com.example.pedidos.model.Pedido;
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     List<Pedido> findByEstado(String estado);
+    
+    List<Pedido> findByClienteId(Long clienteId);
 }

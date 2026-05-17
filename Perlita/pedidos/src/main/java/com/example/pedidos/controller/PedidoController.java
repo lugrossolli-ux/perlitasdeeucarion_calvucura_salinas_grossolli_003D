@@ -63,4 +63,9 @@ public class PedidoController {
             @RequestParam String nuevoEstado) {
         return service.cambiarEstado(id, nuevoEstado);
     }
+
+    @GetMapping("/cliente/{clienteId}")
+    public List<Pedido> listarPorCliente(@PathVariable Long clienteId) {
+        return service.listarPorCliente(clienteId);
+    }
 }

@@ -43,6 +43,10 @@ public class PedidoService {
         return repository.findByEstado(estado);
     }
 
+    public List<Pedido> listarPorCliente(Long clienteId) {
+        return repository.findByClienteId(clienteId);
+    }
+
     private static final Map<String, String> TRANSICIONES_VALIDAS = Map.of(
         "pendiente",  "en_proceso",
         "en_proceso", "completado"
