@@ -203,6 +203,8 @@ POST http://localhost:9090/pedidos
 
 ### Cambiar estado de un pedido
 
+PATCH http://localhost:9090/pedidos/1/estado?nuevoEstado=en_proceso
+
 Los estados válidos son: `pendiente` → `en_proceso` → `completado`
 
 ### Crear una categoría
