@@ -56,4 +56,11 @@ public class PedidoController {
     public List<Pedido> listarPorEstado(@PathVariable String estado) {
         return service.listarPorEstado(estado);
     }
+
+    @PatchMapping("/{id}/estado")
+    public ResponseEntity<Object> cambiarEstado(
+            @PathVariable Long id,
+            @RequestParam String nuevoEstado) {
+        return service.cambiarEstado(id, nuevoEstado);
+    }
 }
