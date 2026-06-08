@@ -32,3 +32,11 @@ spring:
             uri: http://localhost:8085
             predicates:
               - Path=/pedido-materiales/**
+          - id: proveedores
+            uri: http://localhost:8086
+            predicates:
+              - Path=/proveedores/**
+          - id: proveedor-materiales
+            uri: http://localhost:8086
+            predicates:
+              - Path=/proveedor-materiales/**
