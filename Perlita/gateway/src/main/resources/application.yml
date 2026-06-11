@@ -40,3 +40,19 @@ spring:
             uri: http://localhost:8086
             predicates:
               - Path=/proveedor-materiales/**
+          - id: reportes
+            uri: http://localhost:8087
+            predicates:
+              - Path=/reportes/**
+          - id: galeria
+            uri: http://localhost:8088
+            predicates:
+              - Path=/galeria/**
+          - id: gastos
+            uri: http://localhost:8089
+            predicates:
+              - Path=/gastos/**
+          - id: categorias-gasto
+            uri: http://localhost:8089
+            predicates:
+              - Path=/categorias-gasto/**
