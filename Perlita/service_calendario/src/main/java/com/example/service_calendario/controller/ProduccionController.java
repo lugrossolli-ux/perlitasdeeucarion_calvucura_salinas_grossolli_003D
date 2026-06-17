@@ -45,12 +45,14 @@ public class ProduccionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Produccion> actualizar(@PathVariable Integer id, @RequestBody Produccion produccion) {
+    public ResponseEntity<Produccion> actualizar(@PathVariable Integer id,
+                                                  @RequestBody Produccion produccion) {
         return ResponseEntity.ok(produccionService.actualizar(id, produccion));
     }
 
     @PatchMapping("/{id}/estado")
-    public ResponseEntity<Produccion> cambiarEstado(@PathVariable Integer id, @RequestBody Map<String, String> body) {
+    public ResponseEntity<Produccion> cambiarEstado(@PathVariable Integer id,
+                                                     @RequestBody Map<String, String> body) {
         return ResponseEntity.ok(produccionService.cambiarEstado(id, body.get("estado")));
     }
 
