@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/galeria")
+@CrossOrigin(origins = "*")
 public class GaleriaController {
 
     @Autowired

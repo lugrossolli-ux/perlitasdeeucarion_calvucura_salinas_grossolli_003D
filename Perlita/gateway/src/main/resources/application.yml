@@ -56,3 +56,27 @@ spring:
             uri: http://localhost:8089
             predicates:
               - Path=/categorias-gasto/**
+
+          # --- Rutas para documentación Swagger ---
+          - id: categorias-docs
+            uri: http://localhost:8084
+            predicates:
+              - Path=/api/v1/categorias/v3/api-docs
+          - id: galeria-docs
+            uri: http://localhost:8088
+            predicates:
+              - Path=/api/v1/galeria/v3/api-docs
+          - id: reportes-docs
+            uri: http://localhost:8087
+            predicates:
+              - Path=/api/v1/reportes/v3/api-docs
+
+springdoc:
+  swagger-ui:
+    urls:
+      - name: Servicio Categorías
+        url: /api/v1/categorias/v3/api-docs
+      - name: Servicio Galería
+        url: /api/v1/galeria/v3/api-docs
+      - name: Servicio Reportes
+        url: /api/v1/reportes/v3/api-docs

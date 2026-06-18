@@ -12,6 +12,7 @@ import com.example.categories.service.CategoriaService;
 
 @RestController
 @RequestMapping("/categorias")
+@CrossOrigin(origins = "*")
 public class CategoriaController {
 
     @Autowired
