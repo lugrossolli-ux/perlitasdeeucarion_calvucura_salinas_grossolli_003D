@@ -2,6 +2,8 @@ package com.example.service_calendario.controller;
 
 import com.example.service_calendario.model.Produccion;
 import com.example.service_calendario.service.ProduccionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/produccion")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+@Tag(name = "Producción", description = "Gestión de órdenes de producción")
 public class ProduccionController {
 
     private final ProduccionService produccionService;
@@ -22,16 +26,19 @@ public class ProduccionController {
     }
 
     @GetMapping
+    @Operation(summary = "Listar todas las producciones", description = "Retorna todas las órdenes enriquecidas con datos de producto y pedido")
     public ResponseEntity<List<Produccion>> listarTodas() {
         return ResponseEntity.ok(produccionService.listarTodas());
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Buscar producción por ID")
     public ResponseEntity<Produccion> buscarPorId(@PathVariable Integer id) {
         return ResponseEntity.ok(produccionService.buscarPorId(id));
     }
 
     @GetMapping("/calendario")
+    @Operation(summary = "Filtrar por rango de fechas", description = "Retorna producciones cuyo rango solapa con las fechas indicadas")
     public ResponseEntity<List<Produccion>> calendario(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate desde,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate hasta) {
@@ -39,24 +46,28 @@ public class ProduccionController {
     }
 
     @PostMapping
+    @Operation(summary = "Crear una producción", description = "Valida que no haya solapamiento con bloqueos existentes")
     public ResponseEntity<Produccion> crear(@RequestBody Produccion produccion) {
         Produccion creada = produccionService.crear(produccion);
         return ResponseEntity.status(HttpStatus.CREATED).body(creada);
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Actualizar una producción")
     public ResponseEntity<Produccion> actualizar(@PathVariable Integer id,
                                                   @RequestBody Produccion produccion) {
         return ResponseEntity.ok(produccionService.actualizar(id, produccion));
     }
 
     @PatchMapping("/{id}/estado")
+    @Operation(summary = "Cambiar estado de producción", description = "Estados válidos: programado, en_proceso, finalizado, completado")
     public ResponseEntity<Produccion> cambiarEstado(@PathVariable Integer id,
                                                      @RequestBody Map<String, String> body) {
         return ResponseEntity.ok(produccionService.cambiarEstado(id, body.get("estado")));
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar una producción")
     public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
         produccionService.eliminar(id);
         return ResponseEntity.noContent().build();

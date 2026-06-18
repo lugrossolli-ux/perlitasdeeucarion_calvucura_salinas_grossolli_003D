@@ -14,14 +14,14 @@ public class WebClientConfig {
     @Value("${microservicio.pedidos.url}")
     private String pedidosUrl;
 
-    @Bean
+    @Bean("productosWebClient")
     public WebClient productosWebClient() {
         return WebClient.builder()
                 .baseUrl(productosUrl)
                 .build();
     }
 
-    @Bean
+    @Bean("pedidosWebClient")
     public WebClient pedidosWebClient() {
         return WebClient.builder()
                 .baseUrl(pedidosUrl)

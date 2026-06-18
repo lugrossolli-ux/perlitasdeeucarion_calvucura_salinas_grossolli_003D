@@ -58,6 +58,14 @@ spring:
               - Path=/categorias-gasto/**
 
           # --- Rutas para documentación Swagger ---
+          - id: materiales-docs
+            uri: http://localhost:8081
+            predicates:
+              - Path=/api/v1/materiales/v3/api-docs
+          - id: productos-docs
+            uri: http://localhost:8082
+            predicates:
+              - Path=/api/v1/productos/v3/api-docs
           - id: categorias-docs
             uri: http://localhost:8084
             predicates:
@@ -70,13 +78,27 @@ spring:
             uri: http://localhost:8087
             predicates:
               - Path=/api/v1/reportes/v3/api-docs
+          - id: calendario
+            uri: http://localhost:8090
+            predicates:
+              - Path=/api/v1/produccion/**
+          - id: calendario-docs
+            uri: http://localhost:8090
+            predicates:
+              - Path=/api/v1/calendario/v3/api-docs
 
 springdoc:
   swagger-ui:
     urls:
+      - name: Servicio Materiales
+        url: /api/v1/materiales/v3/api-docs
+      - name: Servicio Productos
+        url: /api/v1/productos/v3/api-docs
       - name: Servicio Categorías
         url: /api/v1/categorias/v3/api-docs
       - name: Servicio Galería
         url: /api/v1/galeria/v3/api-docs
       - name: Servicio Reportes
         url: /api/v1/reportes/v3/api-docs
+      - name: Servicio Calendario
+        url: /api/v1/calendario/v3/api-docs
