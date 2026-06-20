@@ -1,4 +1,4 @@
-package com.example.categories.exception;
+package com.example.galeria.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

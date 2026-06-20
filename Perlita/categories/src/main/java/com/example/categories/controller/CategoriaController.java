@@ -9,6 +9,10 @@ import com.example.categories.exception.ResourceNotFoundException;
 import com.example.categories.model.Categoria;
 import com.example.categories.model.ProductoCategoria;
 import com.example.categories.service.CategoriaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/categorias")
@@ -28,6 +32,11 @@ public class CategoriaController {
         return service.listarActivas(1);
     }
 
+    @Operation(summary = "Buscar una categoría por su ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Categoría encontrada"),
+            @ApiResponse(responseCode = "404", description = "Categoría no encontrada")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<Categoria> buscarPorId(@PathVariable Long id) {
         return service.buscarPorId(id)
@@ -36,13 +45,13 @@ public class CategoriaController {
     }
 
     @PostMapping
-    public ResponseEntity<Categoria> crear(@RequestBody Categoria categoria) {
+    public ResponseEntity<Categoria> crear(@Valid @RequestBody Categoria categoria) {
         return new ResponseEntity<>(service.guardar(categoria), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Categoria> actualizar(@PathVariable Long id,
-                                                @RequestBody Categoria categoria) {
+                                                @Valid @RequestBody Categoria categoria) {
         return service.buscarPorId(id)
                 .map(existente -> {
                     existente.setNombre(categoria.getNombre());

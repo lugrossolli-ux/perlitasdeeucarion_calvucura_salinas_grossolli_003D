@@ -1,6 +1,8 @@
 package com.example.galeria.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import java.time.LocalDate;
 
@@ -15,9 +17,11 @@ public class Galeria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "El id del producto es obligatorio")
     @Column(name = "producto_id", nullable = false)
     private Long productoId;
 
+    @NotBlank(message = "La URL de la imagen es obligatoria")
     @Column(name = "url_imagen", nullable = false, length = 500)
     private String urlImagen;
 
@@ -27,6 +31,7 @@ public class Galeria {
     @Column(name = "es_principal", nullable = false)
     private Boolean esPrincipal = false;
 
+    @NotNull(message = "La fecha de subida es obligatoria")
     @Column(name = "fecha_subida", nullable = false)
     private LocalDate fechaSubida;
 
