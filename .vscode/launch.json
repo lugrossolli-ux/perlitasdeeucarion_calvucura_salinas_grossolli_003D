@@ -41,7 +41,8 @@
             "mainClass": "com.example.productos.ProductosApplication",
             "projectName": "productos",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote"
         },
         {
             "type": "java",
@@ -50,6 +51,67 @@
             "cwd": "${workspaceFolder}",
             "mainClass": "com.example.pedidos.PedidosApplication",
             "projectName": "pedidos",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-CategoriesApplication<categories>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.categories.CategoriesApplication",
+            "projectName": "categories",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-GaleriaApplication<galeria>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.galeria.GaleriaApplication",
+            "projectName": "galeria",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-GastosApplication<gastos>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.gastos.GastosApplication",
+            "projectName": "gastos",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-ProvedoresApplication<provedores>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.provedores.ProvedoresApplication",
+            "projectName": "provedores",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-ReportesApplication<reportes>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.reportes.ReportesApplication",
+            "projectName": "reportes",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-VentasApplication<ventas>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "ventas.VentasApplication",
+            "projectName": "ventas",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
         }
