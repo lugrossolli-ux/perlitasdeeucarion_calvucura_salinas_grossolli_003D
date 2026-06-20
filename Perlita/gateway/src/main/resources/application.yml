@@ -65,6 +65,10 @@ spring:
             uri: http://localhost:8082
             predicates:
               - Path=/api/v1/productos/v3/api-docs
+          - id: ventas-docs
+            uri: http://localhost:8083
+            predicates:
+              - Path=/api/v1/ventas/v3/api-docs
           - id: categorias-docs
             uri: http://localhost:8084
             predicates:
@@ -98,6 +102,10 @@ spring:
             predicates:
               - Path=/api/v1/gastos/v3/api-docs
 
+eureka:
+  client:
+    enabled: false
+
 springdoc:
   swagger-ui:
     urls:
@@ -105,6 +113,8 @@ springdoc:
         url: /api/v1/materiales/v3/api-docs
       - name: Servicio Productos
         url: /api/v1/productos/v3/api-docs
+      - name: Servicio Ventas
+        url: /api/v1/ventas/v3/api-docs
       - name: Servicio Categorías
         url: /api/v1/categorias/v3/api-docs
       - name: Servicio Galería
