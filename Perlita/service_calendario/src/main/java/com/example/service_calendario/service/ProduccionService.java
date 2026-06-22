@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class ProduccionService {
@@ -68,13 +69,28 @@ public class ProduccionService {
         return produccionRepository.save(existente);
     }
 
+    private static final Map<String, Set<String>> TRANSICIONES_PROD = Map.of(
+        "programado",  Set.of("en_proceso", "cancelado"),
+        "en_proceso",  Set.of("finalizado", "cancelado"),
+        "finalizado",  Set.of(),
+        "cancelado",   Set.of()
+    );
+
     public Produccion cambiarEstado(Integer id, String nuevoEstado) {
         Produccion existente = produccionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Producción no encontrada con id: " + id));
 
+        String actual = existente.getEstado();
+        Set<String> permitidos = TRANSICIONES_PROD.get(actual);
+
+        if (permitidos == null || !permitidos.contains(nuevoEstado)) {
+            throw new IllegalArgumentException(
+                "Transición inválida: " + actual + " → " + nuevoEstado);
+        }
+
         existente.setEstado(nuevoEstado);
 
-        if ("finalizado".equalsIgnoreCase(nuevoEstado) || "completado".equalsIgnoreCase(nuevoEstado)) {
+        if ("finalizado".equalsIgnoreCase(nuevoEstado)) {
             existente.setFechaFinReal(LocalDate.now());
         }
 

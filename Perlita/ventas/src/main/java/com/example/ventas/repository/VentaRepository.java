@@ -1,6 +1,6 @@
-package ventas.repository;
+package com.example.ventas.repository;
 
-import ventas.model.Venta;
+import com.example.ventas.model.Venta;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

@@ -39,7 +39,7 @@ public class Produccion {
     private LocalDate fechaFinReal;
 
     @Column(nullable = false)
-    @Schema(description = "Estado: programado | en_proceso | finalizado | completado", example = "programado")
+    @Schema(description = "Estado: programado | en_proceso | finalizado | cancelado", example = "programado")
     private String estado = "programado";
 
     @Column(length = 4000)

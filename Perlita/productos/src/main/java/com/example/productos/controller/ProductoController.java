@@ -5,76 +5,93 @@ import com.example.productos.model.Producto;
 import com.example.productos.model.ProductoMaterial;
 import com.example.productos.service.ProductoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/productos")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Tag(name = "Productos", description = "Gestión de productos")
 public class ProductoController {
 
     @Autowired
     private ProductoService service;
 
-    @GetMapping
     @Operation(summary = "Listar todos los productos")
+    @GetMapping
     public List<Producto> listar() {
         return service.listarTodos();
     }
 
-    @GetMapping("/activos")
     @Operation(summary = "Listar productos activos")
+    @GetMapping("/activos")
     public List<Producto> listarActivos() {
         return service.listarActivos();
     }
 
-    @GetMapping("/{id}")
     @Operation(summary = "Buscar producto por ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Producto encontrado"),
+            @ApiResponse(responseCode = "404", description = "Producto no encontrado")
+    })
+    @GetMapping("/{id}")
     public ResponseEntity<Producto> buscarPorId(@PathVariable Long id) {
         return service.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con id: " + id));
     }
 
-    @PostMapping
     @Operation(summary = "Crear un producto")
-    public ResponseEntity<Producto> crear(@RequestBody Producto producto) {
+    @ApiResponse(responseCode = "201", description = "Producto creado exitosamente")
+    @PostMapping
+    public ResponseEntity<Producto> crear(@Valid @RequestBody Producto producto) {
         return new ResponseEntity<>(service.guardar(producto), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
     @Operation(summary = "Actualizar un producto")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Producto actualizado"),
+            @ApiResponse(responseCode = "404", description = "Producto no encontrado")
+    })
+    @PutMapping("/{id}")
     public ResponseEntity<Producto> actualizar(@PathVariable Long id,
-                                                @RequestBody Producto producto) {
+                                                @Valid @RequestBody Producto producto) {
         service.buscarPorId(id).orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con id: " + id));
         producto.setId(id);
         return ResponseEntity.ok(service.guardar(producto));
     }
 
-    @DeleteMapping("/{id}")
     @Operation(summary = "Eliminar un producto")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Producto eliminado"),
+            @ApiResponse(responseCode = "404", description = "Producto no encontrado")
+    })
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         service.buscarPorId(id).orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con id: " + id));
         service.eliminar(id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{id}/materiales")
     @Operation(summary = "Ver materiales de un producto")
+    @GetMapping("/{id}/materiales")
     public List<ProductoMaterial> verMateriales(@PathVariable Long id) {
         return service.obtenerMateriales(id);
     }
 
-    @PostMapping("/{id}/materiales")
     @Operation(summary = "Agregar material a un producto")
+    @ApiResponse(responseCode = "201", description = "Material agregado al producto")
+    @PostMapping("/{id}/materiales")
     public ResponseEntity<ProductoMaterial> agregarMaterial(
             @PathVariable Long id,
-            @RequestBody ProductoMaterial pm) {
+            @Valid @RequestBody ProductoMaterial pm) {
         return service.buscarPorId(id)
                 .map(producto -> {
                     pm.setProducto(producto);

@@ -1,7 +1,8 @@
-package ventas.model;
-
+package com.example.ventas.model;
+import io.swagger.v3.oas.annotations.media.Schema;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity
@@ -9,6 +10,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "Producto incluido en una venta")
 public class VentaProducto {
 
     @Id
@@ -20,12 +22,15 @@ public class VentaProducto {
     @JoinColumn(name = "venta_id")
     private Venta venta;
 
+    @NotNull(message = "El ID del producto es obligatorio")
     @Column(name = "producto_id", nullable = false)
     private Long productoId;
 
+    @NotNull(message = "La cantidad es obligatoria")
     @Column(nullable = false)
     private Integer cantidad;
 
+    @NotNull(message = "El precio unitario es obligatorio")
     @Column(name = "precio_unitario", nullable = false)
     private Double precioUnitario;
 

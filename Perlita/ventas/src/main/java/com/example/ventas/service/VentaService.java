@@ -1,8 +1,8 @@
-package ventas.service;
+package com.example.ventas.service;
 
-import ventas.model.Venta;
-import ventas.repository.VentaProductoRepository;
-import ventas.repository.VentaRepository;
+import com.example.ventas.model.Venta;
+import com.example.ventas.repository.VentaProductoRepository;
+import com.example.ventas.repository.VentaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
