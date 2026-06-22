@@ -1,5 +1,5 @@
 package com.example.galeria.model;
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "Imagen de producto en la galería")
 public class Galeria {
 
     @Id

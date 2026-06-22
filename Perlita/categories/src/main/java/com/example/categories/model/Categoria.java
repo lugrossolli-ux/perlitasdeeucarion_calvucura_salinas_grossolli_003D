@@ -1,5 +1,5 @@
 package com.example.categories.model;
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -9,6 +9,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "Categoría para clasificar productos")
 public class Categoria {
 
     @Id
