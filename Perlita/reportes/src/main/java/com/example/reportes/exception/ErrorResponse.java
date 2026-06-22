@@ -1,38 +1,20 @@
 package com.example.reportes.exception;
 
 public class ErrorResponse {
-
     private int status;
+    private String error;
     private String mensaje;
     private long timestamp;
 
-    public ErrorResponse(int status, String mensaje, long timestamp) {
+    public ErrorResponse(int status, String error, String mensaje) {
         this.status = status;
+        this.error = error;
         this.mensaje = mensaje;
-        this.timestamp = timestamp;
+        this.timestamp = System.currentTimeMillis();
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public String getMensaje() {
-        return mensaje;
-    }
-
-    public void setMensaje(String mensaje) {
-        this.mensaje = mensaje;
-    }
-
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
+    public int getStatus() { return status; }
+    public String getError() { return error; }
+    public String getMensaje() { return mensaje; }
+    public long getTimestamp() { return timestamp; }
 }
