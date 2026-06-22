@@ -2,6 +2,7 @@ package com.example.materiales.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -38,6 +39,15 @@ public class GlobalExceptionHandler {
         ex.getBindingResult().getFieldErrors()
                 .forEach(fe -> errores.put(fe.getField(), fe.getDefaultMessage()));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errores);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Map<String, Object>> handleAccessDenied(AccessDeniedException ex) {
+        Map<String, Object> error = new HashMap<>();
+        error.put("status", 403);
+        error.put("error", "Forbidden");
+        error.put("mensaje", "No posees los permisos necesarios para realizar esta accion.");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 
     @ExceptionHandler(Exception.class)

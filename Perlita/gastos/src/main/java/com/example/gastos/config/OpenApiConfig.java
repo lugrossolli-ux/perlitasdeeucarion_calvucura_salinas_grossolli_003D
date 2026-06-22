@@ -12,7 +12,7 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("API Hospital - Servicio de Gastos")
+                        .title("API Perlitas – Servicio de Gastos")
                         .version("1.0")
                         .description("Documentación de gastos"));
     }
