@@ -4,17 +4,29 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+import com.example.pedidos.exception.ResourceNotFoundException;
 import com.example.pedidos.model.Pedido;
 import com.example.pedidos.repository.PedidoRepository;
 
 @Service
 public class PedidoService {
 
-    @Autowired
-    private PedidoRepository repository;
+    private final PedidoRepository repository;
+    private final WebClient productosWebClient;
+    private final WebClient calendarioWebClient;
+
+    public PedidoService(PedidoRepository repository,
+                         @Qualifier("productosWebClient") WebClient productosWebClient,
+                         @Qualifier("calendarioWebClient") WebClient calendarioWebClient) {
+        this.repository = repository;
+        this.productosWebClient = productosWebClient;
+        this.calendarioWebClient = calendarioWebClient;
+    }
 
     public List<Pedido> listarTodos() {
         return repository.findAll();
@@ -48,8 +60,9 @@ public class PedidoService {
     }
 
     private static final Map<String, String> TRANSICIONES_VALIDAS = Map.of(
-        "pendiente",  "en_proceso",
-        "en_proceso", "completado"
+        "pendiente",          "en_fabricacion",
+        "en_fabricacion",     "listo_para_entrega",
+        "listo_para_entrega", "entregado"
     );
 
     public ResponseEntity<Object> cambiarEstado(Long id, String nuevoEstado) {
@@ -68,5 +81,17 @@ public class PedidoService {
             pedido.setEstado(nuevoEstado);
             return ResponseEntity.ok((Object) repository.save(pedido));
         }).orElse(ResponseEntity.notFound().build());
+    }
+
+    public boolean verificarProductoExiste(Long productoId) {
+        if (productoId == null) return false;
+        Boolean existe = productosWebClient.get()
+                .uri("/productos/{id}", productoId)
+                .retrieve()
+                .bodyToMono(Object.class)
+                .map(r -> true)
+                .onErrorResume(e -> Mono.just(false))
+                .block();
+        return existe != null && existe;
     }
 }
