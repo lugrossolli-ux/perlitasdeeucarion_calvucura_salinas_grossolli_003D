@@ -1,0 +1,144 @@
+server:
+  port: 9090
+
+jwt:
+  secret: "493358340235739058340598340598340598340598340598"
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: auth-service
+            uri: http://localhost:8091
+            predicates:
+              - Path=/auth/**
+          - id: materiales
+            uri: http://localhost:8081
+            predicates:
+              - Path=/materiales/**
+          - id: productos
+            uri: http://localhost:8082
+            predicates:
+              - Path=/productos/**
+          - id: ventas
+            uri: http://localhost:8083
+            predicates:
+              - Path=/ventas/**
+          - id: categorias
+            uri: http://localhost:8084
+            predicates:
+              - Path=/categorias/**
+          - id: pedidos
+            uri: http://localhost:8085
+            predicates:
+              - Path=/pedidos/**
+          - id: pedido-materiales
+            uri: http://localhost:8085
+            predicates:
+              - Path=/pedido-materiales/**
+          - id: proveedores
+            uri: http://localhost:8086
+            predicates:
+              - Path=/proveedores/**
+          - id: proveedor-materiales
+            uri: http://localhost:8086
+            predicates:
+              - Path=/proveedor-materiales/**
+          - id: reportes
+            uri: http://localhost:8087
+            predicates:
+              - Path=/reportes/**
+          - id: galeria
+            uri: http://localhost:8088
+            predicates:
+              - Path=/galeria/**
+          - id: gastos
+            uri: http://localhost:8089
+            predicates:
+              - Path=/gastos/**
+          - id: categorias-gasto
+            uri: http://localhost:8089
+            predicates:
+              - Path=/categorias-gasto/**
+
+          - id: materiales-docs
+            uri: http://localhost:8081
+            predicates:
+              - Path=/api/v1/materiales/v3/api-docs
+          - id: productos-docs
+            uri: http://localhost:8082
+            predicates:
+              - Path=/api/v1/productos/v3/api-docs
+          - id: ventas-docs
+            uri: http://localhost:8083
+            predicates:
+              - Path=/api/v1/ventas/v3/api-docs
+          - id: categorias-docs
+            uri: http://localhost:8084
+            predicates:
+              - Path=/api/v1/categorias/v3/api-docs
+          - id: galeria-docs
+            uri: http://localhost:8088
+            predicates:
+              - Path=/api/v1/galeria/v3/api-docs
+          - id: reportes-docs
+            uri: http://localhost:8087
+            predicates:
+              - Path=/api/v1/reportes/v3/api-docs
+          - id: calendario
+            uri: http://localhost:8090
+            predicates:
+              - Path=/api/v1/produccion/**
+          - id: calendario-docs
+            uri: http://localhost:8090
+            predicates:
+              - Path=/api/v1/calendario/v3/api-docs
+          - id: pedidos-docs
+            uri: http://localhost:8085
+            predicates:
+              - Path=/api/v1/pedidos/v3/api-docs
+          - id: proveedores-docs
+            uri: http://localhost:8086
+            predicates:
+              - Path=/api/v1/proveedores/v3/api-docs
+          - id: gastos-docs
+            uri: http://localhost:8089
+            predicates:
+              - Path=/api/v1/gastos/v3/api-docs
+          - id: auth-docs
+            uri: http://localhost:8091
+            predicates:
+              - Path=/api/v1/auth/v3/api-docs
+
+eureka:
+  client:
+    enabled: false
+
+springdoc:
+  swagger-ui:
+    urls:
+      - name: Servicio Materiales
+        url: /api/v1/materiales/v3/api-docs
+      - name: Servicio Productos
+        url: /api/v1/productos/v3/api-docs
+      - name: Servicio Ventas
+        url: /api/v1/ventas/v3/api-docs
+      - name: Servicio Categorías
+        url: /api/v1/categorias/v3/api-docs
+      - name: Servicio Galería
+        url: /api/v1/galeria/v3/api-docs
+      - name: Servicio Reportes
+        url: /api/v1/reportes/v3/api-docs
+      - name: Servicio Calendario
+        url: /api/v1/calendario/v3/api-docs
+      - name: Servicio Pedidos
+        url: /api/v1/pedidos/v3/api-docs
+      - name: Servicio Proveedores
+        url: /api/v1/proveedores/v3/api-docs
+      - name: Servicio Gastos
+        url: /api/v1/gastos/v3/api-docs
+      - name: Servicio Auth
+        url: /api/v1/auth/v3/api-docs
